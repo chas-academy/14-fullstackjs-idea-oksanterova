@@ -1,22 +1,43 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { ApolloProvider } from "react-apollo";
 
 import "./App.css";
 import Header from "./components/layout/Header";
+import SmallSearch from "./components/layout/SmallSearch";
 import Homepage from "./components/pages/Homepage";
 import Search from "./components/pages/Search";
 import client from "./client";
+import styled from "styled-components/macro";
+
+function HeaderWithSearch() {
+  return (
+    <Header>
+      <SmallSearch />
+    </Header>
+  );
+}
+
+const Container = styled.div`
+  margin: 20px;
+`;
 
 function App() {
   return (
     <ApolloProvider client={client}>
       <div className="App">
-        <Header />
-
         <Router>
-          <Route exact path="/" component={Homepage} />
-          <Route exact path="/search" component={Search} />
+          {
+            <Container>
+              <Route exact path="/" component={Header} />
+              <Route exact path="/search" component={HeaderWithSearch} />
+            </Container>
+          }
+
+          <Container>
+            <Route exact path="/" component={Homepage} />
+            <Route exact path="/search" component={Search} />
+          </Container>
         </Router>
       </div>
     </ApolloProvider>
