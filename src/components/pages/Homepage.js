@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components/macro";
 import logo from "../../assets/logo.png";
+import { withRouter } from "react-router";
 
 const Wrapper = styled.div`
   display: flex;
@@ -57,7 +58,7 @@ const SearchBtn = styled.button`
   top: 0px;
 `;
 
-export default function Homepage() {
+function Homepage({ history }) {
   const search = useRef(null);
 
   useEffect(() => {
@@ -71,16 +72,27 @@ export default function Homepage() {
       <Search>
         <Logo />
         <InputWrapper>
-          <Input
-            type="text"
-            placeholder="Search for a restaurant or a place"
-            value={text}
-            ref={search}
-            onChange={e => setText(e.target.value)}
-          />
+          <form
+            onSubmit={e =>
+              history.push({
+                pathname: "/search",
+                search: "?q=" + text
+              })
+            }
+          >
+            <Input
+              type="text"
+              placeholder="Search for a restaurant or a place"
+              value={text}
+              ref={search}
+              onChange={e => setText(e.target.value)}
+            />
+          </form>
           <SearchBtn />
         </InputWrapper>
       </Search>
     </Wrapper>
   );
 }
+
+export default withRouter(Homepage);
