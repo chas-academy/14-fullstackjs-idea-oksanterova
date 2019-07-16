@@ -5,11 +5,13 @@ import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
 import queryString from "query-string";
 import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const QUERY = gql`
   query Search($term: String!) {
     search(term: $term, location: "stockholm") {
       business {
+        id
         photos
         name
         categories {
@@ -24,14 +26,14 @@ const QUERY = gql`
   }
 `;
 
-const SearchWrapper = styled.div`
+export const SearchWrapper = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   border: 1px #ccc solid;
   background-color: #fff;
   border-radius: 6px;
 `;
 
-const Image = styled.img`
+export const Image = styled.img`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   border: 1px #ccc solid;
   border-radius: 4px;
@@ -42,7 +44,7 @@ const Image = styled.img`
   object-fit: cover;
 `;
 
-const SearchResult = styled.div`
+export const SearchResult = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -51,14 +53,7 @@ const SearchResult = styled.div`
   padding: 20px;
 `;
 
-const Rating = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  font-weight: 700;
-  line-height: 24px;
-`;
-
-const Summary = styled.div`
+export const Summary = styled.div`
   display: flex;
   flex-flow: column wrap;
   justify-content: flex-start;
@@ -66,25 +61,32 @@ const Summary = styled.div`
   flex: 1;
 `;
 
-const Name = styled.div`
+export const Name = styled.div`
   font-weight: 700;
   color: #44000d;
+  cursor: pointer;
 `;
 
-const Info = styled.div`
-  font-weight: 400;
+export const Category = styled.div`
   font-size: 14px;
-  width: 350px;
-`;
-
-const Category = styled.div`
-  font-weight: 400;
-  font-size: 14px;
-  width: 350px;
   color: #83142c;
+  margin-right: 20px;
 `;
 
-const Star = styled.div`
+export const Info = styled.div`
+  font-weight: 400;
+  font-size: 14px;
+  width: 350px;
+`;
+
+export const Rating = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  font-weight: 700;
+  line-height: 24px;
+`;
+
+export const Star = styled.div`
   height: 24px;
   width: 24px;
   margin-left: 5px;
@@ -95,16 +97,20 @@ const Star = styled.div`
 function SearchResults({ business }) {
   return (
     <SearchWrapper>
-      {business.map(({ photos, name, categories, rating, location }) => (
-        <SearchResult>
-          <Image src={photos} />
+      {business.map(({ id, photos, name, categories, rating, location }) => (
+        <SearchResult key={id}>
+          <Link to={`/business/${id}`}>
+            <Image src={photos} />
+          </Link>
           <Summary>
-            <Name>{name}</Name>
+            <Link to={`/business/${id}`}>
+              <Name>{name}</Name>
+            </Link>
 
             <Category>{categories[0].title}</Category>
 
-            {location.formatted_address.split("\n").map(address => (
-              <Info>{address}</Info>
+            {location.formatted_address.split("\n").map((address, index) => (
+              <Info key={index}>{address}</Info>
             ))}
           </Summary>
           <Rating>
