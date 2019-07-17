@@ -7,6 +7,7 @@ import Header from "./components/layout/Header";
 import SmallSearch from "./components/layout/SmallSearch";
 import Homepage from "./components/pages/Homepage";
 import Business from "./components/pages/Business";
+import Reservation from "./components/pages/Reservation";
 import Search from "./components/pages/Search";
 import client from "./client";
 import styled from "styled-components/macro";
@@ -33,6 +34,7 @@ function App() {
               <Route exact path="/" component={Header} />
               <Route exact path="/search" component={HeaderWithSearch} />
               <Route path="/business" component={HeaderWithSearch} />
+              <Route path="/reservation" component={HeaderWithSearch} />
             </Container>
           }
 
@@ -40,6 +42,11 @@ function App() {
             <Route exact path="/" component={Homepage} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/business/:id" component={Business} />
+            <Route
+              exact
+              path="/business/:id/reservation"
+              component={Reservation}
+            />
           </Container>
         </Router>
       </div>
