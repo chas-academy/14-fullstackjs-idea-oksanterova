@@ -6,6 +6,7 @@ import { Query } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import Flex from "styled-flex-component";
 import { Star, Image, Rating, Name, Info, Category } from "./Search";
+import { Link } from "react-router-dom";
 
 const QUERY = gql`
   query Search($id: String!) {
@@ -51,7 +52,7 @@ const Head = styled.div`
   margin: 20px;
 `;
 
-const BigName = styled(Name)`
+export const BigName = styled(Name)`
   font-size: 32px;
   font-weight: 800;
   margin-right: 40px;
@@ -121,7 +122,7 @@ const GoogleMap = styled(Image)`
   height: 200px;
 `;
 
-const BookBtn = styled.button`
+export const BookBtn = styled.button`
   width: 300px;
   height: 50px;
   color: #fff;
@@ -133,7 +134,7 @@ const BookBtn = styled.button`
 `;
 
 function Space({ business }) {
-  const { photos, name, categories, rating, location, reviews } = business;
+  const { id, photos, name, categories, rating, location, reviews } = business;
 
   return (
     <Wrapper>
@@ -173,7 +174,9 @@ function Space({ business }) {
                 <Info key={index}>{address}</Info>
               ))}
             </Summary>
-            <BookBtn>Book</BookBtn>
+            <Link to={`/business/${id}/reservation`}>
+              <BookBtn>Book</BookBtn>
+            </Link>
           </BusinessSummary>
         </BusinessBody>
       </Flex>
