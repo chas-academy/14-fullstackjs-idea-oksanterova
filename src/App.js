@@ -9,6 +9,7 @@ import Homepage from "./components/pages/Homepage";
 import Business from "./components/pages/Business";
 import Reservation from "./components/pages/Reservation";
 import Search from "./components/pages/Search";
+import About from "./components/pages/About";
 import client from "./client";
 import styled from "styled-components/macro";
 
@@ -47,6 +48,7 @@ function App() {
               path="/business/:id/reservation"
               component={Reservation}
             />
+            <Route exact path="/about" component={About} />
           </Container>
         </Router>
       </div>

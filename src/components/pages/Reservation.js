@@ -19,7 +19,7 @@ const QUERY = gql`
   }
 `;
 
-const borderAndShadow = props => `
+export const borderAndShadow = props => `
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   border: 1px #ccc solid;
   border-radius: 6px;
@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   padding: 5px;
 `;
 
-const Head = styled.div`
+export const Head = styled.div`
   margin: 10px auto;
 `;
 
