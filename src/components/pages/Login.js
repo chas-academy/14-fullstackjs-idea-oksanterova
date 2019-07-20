@@ -7,8 +7,6 @@ import { BigName, BookBtn } from "./Business";
 import { ApolloConsumer, Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 
-export default withRouter(Login);
-
 const SIGN_IN = gql`
   mutation($login: String!, $password: String!) {
     signIn(login: $login, password: $password) {
@@ -133,3 +131,5 @@ function LoginForm({ signIn }) {
     </LoginFormWrapper>
   );
 }
+
+export default withRouter(Login);
