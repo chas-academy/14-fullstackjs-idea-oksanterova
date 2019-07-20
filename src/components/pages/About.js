@@ -15,21 +15,22 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin: 20px;
+  margin: 0 auto;
+  width: 600px;
 `;
 
 const BlackLogo = styled.div`
-  margin-top: 10px;
+  margin-top: -10px;
   width: 185px;
   height: 185px;
   background: url(${logo_black}) no-repeat;
-  padding-right: 30px;
+  padding-right: 10px;
 `;
 
 const Body = styled.div`
   align-text: center;
   margin: 20px;
-  width: 700px;
+  width: 500px;
   font-size: 16px;
   line-height: 1.5;
 `;
@@ -47,7 +48,8 @@ function About() {
         task was performed by me as the last report on the knowledge gained
         before the imminent start of my internship. I tried to show my skills
         and, at the same time, to prepare myself for work duties using similar
-        technologies. I hope you will like it! &copy; 2019 Oksana Kanterova
+        technologies. I hope you will like it! <br /> &copy; 2019 Oksana
+        Kanterova
       </Body>
     </Wrapper>
   );

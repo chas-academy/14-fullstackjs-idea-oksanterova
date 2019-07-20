@@ -29,6 +29,8 @@ const Wrapper = styled.div`
   ${borderAndShadow};
   background-color: #fff;
   padding: 5px;
+  width: 600px;
+  margin: 0 auto;
 `;
 
 export const Head = styled.div`

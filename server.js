@@ -7,7 +7,7 @@ app.use(cors());
 
 let config = {
   accessToken: process.env.ACCESS_TOKEN,
-  port: process.env.PORT || 3001
+  port: process.env.PORT || 8000
 };
 
 app.use("/graphql", function(req, res) {

@@ -5,19 +5,17 @@ import {
   Wrapper,
   BigLoginName,
   Message,
-  LoginForm,
+  LoginFormWrapper,
   Input,
   StyledLink,
   LoginBtn
 } from "./Login";
 
-export default withRouter(SignUp);
-
 function SignUp() {
   return (
     <Wrapper>
       <BigLoginName>Sign Up</BigLoginName>
-      <LoginForm>
+      <LoginFormWrapper>
         <Input type="text" placeholder="name" />
         <Input type="password" placeholder="password" />
         <Input type="text" placeholder="email address" />
@@ -28,7 +26,9 @@ function SignUp() {
         <Message>
           Already registered? <StyledLink to={`/login`}>Login</StyledLink>
         </Message>
-      </LoginForm>
+      </LoginFormWrapper>
     </Wrapper>
   );
 }
+
+export default withRouter(SignUp);

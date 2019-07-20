@@ -131,6 +131,7 @@ export const BookBtn = styled.button`
   background-color: #ad1d45;
   border-radius: 6px;
   cursor: pointer;
+  margin: 10px 0 10px 0;
 
   :hover {
     opacity: 0.8;
