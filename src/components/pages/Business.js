@@ -131,6 +131,11 @@ export const BookBtn = styled.button`
   background-color: #ad1d45;
   border-radius: 6px;
   cursor: pointer;
+  margin: 10px 0 10px 0;
+
+  :hover {
+    opacity: 0.8;
+  }
 `;
 
 function Space({ business }) {
@@ -199,7 +204,7 @@ function Business({ location, match }) {
           );
         if (error) {
           console.log(error);
-          return <p>Error :(</p>;
+          return <p>An error occurred</p>;
         }
 
         return <Space business={data.business} />;
