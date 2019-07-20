@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
 import Flex, { FlexItem } from "styled-flex-component";
 
@@ -25,8 +25,8 @@ export default function Header({ children }) {
       <Flex contentEnd>
         <StyledLink to="/">Sign up</StyledLink>
         <StyledLink to="/">Login</StyledLink>
-        <StyledLink to="/">About us</StyledLink>
-        <StyledLink to="/">Contact us</StyledLink>
+        <StyledLink to="/about">About</StyledLink>
+        <StyledLink to="/">Contact</StyledLink>
       </Flex>
     </Flex>
   );
