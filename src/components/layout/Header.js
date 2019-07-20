@@ -23,8 +23,8 @@ export default function Header({ children }) {
     <Flex justifyBetween>
       <FlexItem grow>{children}</FlexItem>
       <Flex contentEnd>
-        <StyledLink to="/">Sign up</StyledLink>
-        <StyledLink to="/">Login</StyledLink>
+        <StyledLink to="/signup">Sign up</StyledLink>
+        <StyledLink to="/login">Login</StyledLink>
         <StyledLink to="/about">About</StyledLink>
         <StyledLink to="/">Contact</StyledLink>
       </Flex>

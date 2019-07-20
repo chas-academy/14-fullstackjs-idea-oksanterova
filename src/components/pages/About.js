@@ -3,7 +3,7 @@ import styled from "styled-components/macro";
 import logo_black from "../../assets/logo_black.png";
 import { withRouter } from "react-router";
 import { borderAndShadow } from "./Reservation";
-import { BigName } from "./Business";
+import { BigLoginName } from "./Login";
 
 export default withRouter(About);
 
@@ -37,7 +37,7 @@ const Body = styled.div`
 function About() {
   return (
     <Wrapper>
-      <BigName>About us</BigName>
+      <BigLoginName>About us</BigLoginName>
       <BlackLogo />
       <Body>
         Tablespoon is a very small, but proud web application that is designed

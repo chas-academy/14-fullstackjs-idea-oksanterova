@@ -131,6 +131,10 @@ export const BookBtn = styled.button`
   background-color: #ad1d45;
   border-radius: 6px;
   cursor: pointer;
+
+  :hover {
+    opacity: 0.8;
+  }
 `;
 
 function Space({ business }) {
