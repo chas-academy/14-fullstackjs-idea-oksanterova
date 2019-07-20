@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
 import Flex, { FlexItem } from "styled-flex-component";
+import { Query, ApolloProvider } from "react-apollo";
+import client, { IS_LOGGED_IN } from "../../client";
 
 const StyledLink = styled(Link)`
   color: #fff;
@@ -20,14 +22,40 @@ const StyledLink = styled(Link)`
 
 export default function Header({ children }) {
   return (
-    <Flex justifyBetween>
-      <FlexItem grow>{children}</FlexItem>
-      <Flex contentEnd>
-        <StyledLink to="/signup">Sign up</StyledLink>
-        <StyledLink to="/login">Login</StyledLink>
-        <StyledLink to="/about">About</StyledLink>
-        <StyledLink to="/">Contact</StyledLink>
+    <ApolloProvider client={client}>
+      <Flex justifyBetween>
+        <FlexItem grow>{children}</FlexItem>
+        <Flex contentEnd>
+          <Query query={IS_LOGGED_IN}>
+            {({ data }) =>
+              data.isLoggedIn ? (
+                <StyledLink to="/user/:id/profile">Profile</StyledLink>
+              ) : (
+                <StyledLink to="/signup">Sign up</StyledLink>
+              )
+            }
+          </Query>
+          <Query query={IS_LOGGED_IN}>
+            {({ data }) =>
+              data.isLoggedIn ? (
+                <StyledLink
+                  to="/logout"
+                  onClick={() => {
+                    client.writeData({ data: { isLoggedIn: false } });
+                    localStorage.clear();
+                  }}
+                >
+                  Log Out
+                </StyledLink>
+              ) : (
+                <StyledLink to="/login">Login</StyledLink>
+              )
+            }
+          </Query>
+          <StyledLink to="/about">About</StyledLink>
+          <StyledLink to="/">Contact</StyledLink>
+        </Flex>
       </Flex>
-    </Flex>
+    </ApolloProvider>
   );
 }

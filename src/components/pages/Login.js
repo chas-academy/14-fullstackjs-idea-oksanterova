@@ -81,7 +81,13 @@ function Login({ history }) {
             }}
           >
             {(signIn, { loading, error }) => {
-              if (loading) return <h1>Loading</h1>;
+              if (loading)
+                return (
+                  <div className="spinner">
+                    <div className="dot1" />
+                    <div className="dot2" />
+                  </div>
+                );
               if (error) return <p>An error occurred</p>;
 
               return <LoginForm signIn={signIn} />;

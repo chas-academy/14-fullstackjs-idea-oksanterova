@@ -126,7 +126,7 @@ function Reservation({ location, match }) {
           );
         if (error) {
           console.log(error);
-          return <p>Error :(</p>;
+          return <p>An error occurred</p>;
         }
 
         return <Booking business={data.business} />;

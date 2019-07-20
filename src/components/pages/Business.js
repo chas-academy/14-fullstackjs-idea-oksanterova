@@ -204,7 +204,7 @@ function Business({ location, match }) {
           );
         if (error) {
           console.log(error);
-          return <p>Error :(</p>;
+          return <p>An error occurred</p>;
         }
 
         return <Space business={data.business} />;

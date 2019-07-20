@@ -138,7 +138,7 @@ function Search({ location }) {
           );
         if (error) {
           console.log(error);
-          return <p>Error :(</p>;
+          return <p>An error occurred</p>;
         }
 
         return <SearchResults business={data.search.business} />;

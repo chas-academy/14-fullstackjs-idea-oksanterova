@@ -1,8 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { ApolloProvider } from "react-apollo";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { Query, ApolloProvider } from "react-apollo";
+import client, { IS_LOGGED_IN } from "./client";
 
 import "./App.css";
+import styled from "styled-components/macro";
 import Header from "./components/layout/Header";
 import SmallSearch from "./components/layout/SmallSearch";
 import Homepage from "./components/pages/Homepage";
@@ -11,9 +13,9 @@ import Reservation from "./components/pages/Reservation";
 import Search from "./components/pages/Search";
 import About from "./components/pages/About";
 import Login from "./components/pages/Login";
+import LogOut from "./components/pages/LogOut";
 import SignUp from "./components/pages/SignUp";
-import client from "./client";
-import styled from "styled-components/macro";
+import Profile from "./components/pages/Profile";
 
 function HeaderWithSearch() {
   return (
@@ -26,6 +28,23 @@ function HeaderWithSearch() {
 const Container = styled.div`
   margin: 20px;
 `;
+
+const UserRoute = ({ component: Component, ...rest }) => (
+  <Query query={IS_LOGGED_IN}>
+    {({ data }) => (
+      <Route
+        {...rest}
+        render={props =>
+          data.isLoggedIn === true ? (
+            <Component {...props} />
+          ) : (
+            <Redirect to="/login" />
+          )
+        }
+      />
+    )}
+  </Query>
+);
 
 function App() {
   return (
@@ -41,6 +60,7 @@ function App() {
               <Route path="/about" component={HeaderWithSearch} />
               <Route path="/login" component={HeaderWithSearch} />
               <Route path="/signup" component={HeaderWithSearch} />
+              <Route path="/user/:id/profile" component={HeaderWithSearch} />
             </Container>
           }
 
@@ -48,14 +68,18 @@ function App() {
             <Route exact path="/" component={Homepage} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/business/:id" component={Business} />
-            <Route
+
+            <UserRoute
               exact
               path="/business/:id/reservation"
               component={Reservation}
             />
+
             <Route exact path="/about" component={About} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/logout" component={LogOut} />
             <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/user/:id/profile" component={Profile} />
           </Container>
         </Router>
       </div>
