@@ -17,13 +17,17 @@ const resolvers = {};
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("token");
 
+  console.log("setContext", token);
+
   if (token) {
     return {
-      ...headers,
-      "x-token": localStorage.getItem("token")
+      headers: {
+        ...headers,
+        "x-token": token
+      }
     };
   } else {
-    return headers;
+    return { headers };
   }
 });
 
@@ -36,16 +40,14 @@ const httpLink = createHttpLink({
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-  typeDefs,
-  resolvers
-});
-
-cache.writeData({
-  data: {
-    isLoggedIn: !!localStorage.getItem("token")
+  cache,
+  clientState: {
+    typeDefs,
+    resolvers
   }
 });
+
+client.writeData({ data: { isLoggedIn: !!localStorage.getItem("token") } });
 
 export const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {

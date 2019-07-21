@@ -16,6 +16,7 @@ import Login from "./components/pages/Login";
 import LogOut from "./components/pages/LogOut";
 import SignUp from "./components/pages/SignUp";
 import Profile from "./components/pages/Profile";
+import { withRouter } from "react-router";
 
 function HeaderWithSearch() {
   return (
@@ -29,7 +30,7 @@ const Container = styled.div`
   margin: 20px;
 `;
 
-const UserRoute = ({ component: Component, ...rest }) => (
+const UserRoute = withRouter(({ component: Component, history, ...rest }) => (
   <Query query={IS_LOGGED_IN}>
     {({ data }) => (
       <Route
@@ -38,13 +39,15 @@ const UserRoute = ({ component: Component, ...rest }) => (
           data.isLoggedIn === true ? (
             <Component {...props} />
           ) : (
-            <Redirect to="/login" />
+            <Redirect
+              to={{ pathname: "/login", state: { referrer: history.location } }}
+            />
           )
         }
       />
     )}
   </Query>
-);
+));
 
 function App() {
   return (
