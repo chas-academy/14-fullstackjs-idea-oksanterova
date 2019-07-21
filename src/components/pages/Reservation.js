@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
-import Flex from "styled-flex-component";
 import { BigName, BookBtn } from "./Business";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,8 +16,16 @@ const QUERY = gql`
 `;
 
 const CREATE_RESERVATION = gql`
-  mutation($businessId: String!) {
-    createReservation(businessId: $businessId) {
+  mutation(
+    $businessId: String!
+    $reservationTime: Date!
+    $numberOfGuests: Int!
+  ) {
+    createReservation(
+      businessId: $businessId
+      reservationTime: $reservationTime
+      numberOfGuests: $numberOfGuests
+    ) {
       id
     }
   }
@@ -36,6 +43,9 @@ const Wrapper = styled.div`
   padding: 5px;
   width: 600px;
   margin: 0 auto;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
 `;
 
 export const Head = styled.div`
@@ -55,48 +65,58 @@ const FormDiv = styled.form`
 `;
 
 const SelectDiv = styled.div`
-  margin-bottom: 10px;
+  margin: 10px 0 10px 0;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
 `;
 
 const BtnDiv = styled.div`
-  margin-top: -10px;
-  margin-bottom: 5px;
+  margin: 0 0 -15px 0;
+`;
+
+const ConfirmBtn = styled(BookBtn)`
+  width: 320px;
 `;
 
 function Booking({ business, createReservation }) {
   const { name } = business;
-  const [guestNumber, setGuestNumber] = useState("");
-  const [startDate, setStartDate] = useState("");
+  const [numberOfGuests, setNumberOfGuests] = useState(2);
+  const [reservationTime, setReservationTime] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
-    createReservation();
+    createReservation({
+      variables: {
+        reservationTime,
+        numberOfGuests
+      }
+    });
   };
 
   return (
     <Wrapper>
-      <Flex column alignCenter>
-        <Head>
-          <BigName>Your booking at {name}</BigName>
-        </Head>
+      <Head>
+        <BigName>Your booking at {name}</BigName>
+      </Head>
 
-        <form onSubmit={handleSubmit}>
-          <Label>
-            Please pick a time for your dinner:
-            <DatePicker
-              inline
-              selected={startDate}
-              onChange={setStartDate}
-              showTimeSelect
-              timeIntervals={15}
-              dateFormat="MMMM d, yyyy"
-            />
-          </Label>
+      <FormDiv onSubmit={handleSubmit}>
+        <Label>Please pick a time for your dinner:</Label>
+        <DatePicker
+          inline
+          selected={reservationTime}
+          onChange={setReservationTime}
+          showTimeSelect
+          timeIntervals={15}
+          dateFormat="MMMM d, yyyy"
+        />
+
+        <SelectDiv>
           <Label>
             Please select the number of guests:
             <select
-              value={guestNumber}
-              onChange={e => setGuestNumber(e.target.value)}
+              value={numberOfGuests}
+              onChange={e => setNumberOfGuests(e.target.value)}
             >
               <option value="1">1</option>
               <option value="2">2</option>
@@ -109,10 +129,12 @@ function Booking({ business, createReservation }) {
               <option value="9">9</option>
               <option value="10">10</option>
             </select>
-            <BookBtn type="submit">Confirm</BookBtn>
+            <BtnDiv>
+              <ConfirmBtn type="submit">Confirm</ConfirmBtn>
+            </BtnDiv>
           </Label>
-        </form>
-      </Flex>
+        </SelectDiv>
+      </FormDiv>
     </Wrapper>
   );
 }

@@ -16,6 +16,7 @@ import Login from "./components/pages/Login";
 import LogOut from "./components/pages/LogOut";
 import SignUp from "./components/pages/SignUp";
 import Profile from "./components/pages/Profile";
+import Confirmation from "./components/pages/Confirmation";
 import { withRouter } from "react-router";
 
 function HeaderWithSearch() {
@@ -64,6 +65,7 @@ function App() {
               <Route path="/login" component={HeaderWithSearch} />
               <Route path="/signup" component={HeaderWithSearch} />
               <Route path="/user/:id/profile" component={HeaderWithSearch} />
+              <Route path="/reservations/:id/" component={HeaderWithSearch} />
             </Container>
           }
 
@@ -77,12 +79,17 @@ function App() {
               path="/business/:id/reservation"
               component={Reservation}
             />
+            <UserRoute exact path="/user/:id/profile" component={Profile} />
+            <UserRoute
+              exact
+              path="/reservations/:id"
+              component={Confirmation}
+            />
 
             <Route exact path="/about" component={About} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/logout" component={LogOut} />
             <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/user/:id/profile" component={Profile} />
           </Container>
         </Router>
       </div>
