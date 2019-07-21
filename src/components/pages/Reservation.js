@@ -1,20 +1,32 @@
 import React, { useState } from "react";
-import "../../App.css";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
-import { Query } from "react-apollo";
 import { withRouter } from "react-router-dom";
-import Flex from "styled-flex-component";
 import { BigName, BookBtn } from "./Business";
-import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { QueryLoader, MutationLoader } from "../Loader";
 
 const QUERY = gql`
   query Search($id: String!) {
     business(id: $id) {
-      id
       name
+    }
+  }
+`;
+
+const CREATE_RESERVATION = gql`
+  mutation(
+    $businessId: String!
+    $reservationTime: Date!
+    $numberOfGuests: Int!
+  ) {
+    createReservation(
+      businessId: $businessId
+      reservationTime: $reservationTime
+      numberOfGuests: $numberOfGuests
+    ) {
+      id
     }
   }
 `;
@@ -31,6 +43,9 @@ const Wrapper = styled.div`
   padding: 5px;
   width: 600px;
   margin: 0 auto;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
 `;
 
 export const Head = styled.div`
@@ -46,92 +61,108 @@ const FormDiv = styled.form`
   margin-top: 10px;
   display: flex;
   flex-flow: column wrap;
+  align-items: center;
 `;
 
 const SelectDiv = styled.div`
-  margin-bottom: 10px;
+  margin: 10px 0 10px 0;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
 `;
 
 const BtnDiv = styled.div`
-  margin-top: -10px;
-  margin-bottom: 5px;
+  margin: 0 0 -15px 0;
 `;
 
-function Booking({ business }) {
+const ConfirmBtn = styled(BookBtn)`
+  width: 320px;
+`;
+
+function Booking({ business, createReservation }) {
   const { name } = business;
-  const [guestNumber, setGuestNumber] = useState("");
-  const [startDate, handleChange] = useState("");
+  const [numberOfGuests, setNumberOfGuests] = useState(2);
+  const [reservationTime, setReservationTime] = useState("");
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    createReservation({
+      variables: {
+        reservationTime,
+        numberOfGuests
+      }
+    });
+  };
 
   return (
     <Wrapper>
-      <Flex column alignCenter>
-        <Head>
-          <BigName>Your booking at {name}</BigName>
-        </Head>
-        <Flex column alignCenter>
-          <Label>Please pick a time for your dinner:</Label>
-          <DatePicker
-            inline
-            selected={startDate}
-            onChange={handleChange}
-            showTimeSelect
-            timeIntervals={15}
-            dateFormat="MMMM d, yyyy"
-          />
-          <FormDiv onSubmit={e => console.log("success")}>
-            <SelectDiv>
-              <Label>
-                Please select the number of guests:
-                <select
-                  value={guestNumber}
-                  onChange={e => setGuestNumber(e.target.value)}
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                </select>
-              </Label>
-            </SelectDiv>
+      <Head>
+        <BigName>Your booking at {name}</BigName>
+      </Head>
+
+      <FormDiv onSubmit={handleSubmit}>
+        <Label>Please pick a time for your dinner:</Label>
+        <DatePicker
+          inline
+          selected={reservationTime}
+          onChange={setReservationTime}
+          showTimeSelect
+          timeIntervals={15}
+          dateFormat="MMMM d, yyyy"
+        />
+
+        <SelectDiv>
+          <Label>
+            Please select the number of guests:
+            <select
+              value={numberOfGuests}
+              onChange={e => setNumberOfGuests(e.target.value)}
+            >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
             <BtnDiv>
-              <Link to={`/`}>
-                <BookBtn>Confirm</BookBtn>
-              </Link>
+              <ConfirmBtn type="submit">Confirm</ConfirmBtn>
             </BtnDiv>
-          </FormDiv>
-        </Flex>
-      </Flex>
+          </Label>
+        </SelectDiv>
+      </FormDiv>
     </Wrapper>
   );
 }
 
-function Reservation({ location, match }) {
-  const id = match.params.id;
+function Reservation({ history, match }) {
+  const businessId = match.params.id;
+
+  function handleCompleted({ createReservation }) {
+    history.push("/reservations/" + createReservation.id);
+  }
 
   return (
-    <Query query={QUERY} variables={{ id }}>
-      {({ loading, error, data }) => {
-        if (loading)
-          return (
-            <div className="spinner">
-              <div className="dot1" />
-              <div className="dot2" />
-            </div>
-          );
-        if (error) {
-          console.log(error);
-          return <p>An error occurred</p>;
-        }
-
-        return <Booking business={data.business} />;
-      }}
-    </Query>
+    <QueryLoader query={QUERY} variables={{ id: businessId }}>
+      {({ business }) => (
+        <MutationLoader
+          mutation={CREATE_RESERVATION}
+          onCompleted={handleCompleted}
+          variables={{ businessId }}
+        >
+          {createReservation => (
+            <Booking
+              business={business}
+              createReservation={createReservation}
+            />
+          )}
+        </MutationLoader>
+      )}
+    </QueryLoader>
   );
 }
 

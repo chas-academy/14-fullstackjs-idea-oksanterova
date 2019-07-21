@@ -16,6 +16,8 @@ import Login from "./components/pages/Login";
 import LogOut from "./components/pages/LogOut";
 import SignUp from "./components/pages/SignUp";
 import Profile from "./components/pages/Profile";
+import Confirmation from "./components/pages/Confirmation";
+import { withRouter } from "react-router";
 
 function HeaderWithSearch() {
   return (
@@ -29,7 +31,7 @@ const Container = styled.div`
   margin: 20px;
 `;
 
-const UserRoute = ({ component: Component, ...rest }) => (
+const UserRoute = withRouter(({ component: Component, history, ...rest }) => (
   <Query query={IS_LOGGED_IN}>
     {({ data }) => (
       <Route
@@ -38,13 +40,15 @@ const UserRoute = ({ component: Component, ...rest }) => (
           data.isLoggedIn === true ? (
             <Component {...props} />
           ) : (
-            <Redirect to="/login" />
+            <Redirect
+              to={{ pathname: "/login", state: { referrer: history.location } }}
+            />
           )
         }
       />
     )}
   </Query>
-);
+));
 
 function App() {
   return (
@@ -61,6 +65,7 @@ function App() {
               <Route path="/login" component={HeaderWithSearch} />
               <Route path="/signup" component={HeaderWithSearch} />
               <Route path="/user/:id/profile" component={HeaderWithSearch} />
+              <Route path="/reservations/:id/" component={HeaderWithSearch} />
             </Container>
           }
 
@@ -74,12 +79,17 @@ function App() {
               path="/business/:id/reservation"
               component={Reservation}
             />
+            <UserRoute exact path="/user/:id/profile" component={Profile} />
+            <UserRoute
+              exact
+              path="/reservations/:id"
+              component={Confirmation}
+            />
 
             <Route exact path="/about" component={About} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/logout" component={LogOut} />
             <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/user/:id/profile" component={Profile} />
           </Container>
         </Router>
       </div>

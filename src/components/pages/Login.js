@@ -63,7 +63,7 @@ export const LoginBtn = styled(BookBtn)`
   width: 315px;
 `;
 
-function Login({ history }) {
+function Login({ history, location }) {
   return (
     <Wrapper>
       <BigLoginName>Login</BigLoginName>
@@ -75,7 +75,12 @@ function Login({ history }) {
             onCompleted={({ signIn }) => {
               localStorage.setItem("token", signIn.token);
               client.writeData({ data: { isLoggedIn: true } });
-              history.push("/");
+
+              if (location.state && location.state.referrer) {
+                history.push(location.state.referrer);
+              } else {
+                history.push("/");
+              }
             }}
           >
             {(signIn, { loading, error }) => {
