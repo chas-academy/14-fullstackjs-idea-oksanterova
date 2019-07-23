@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  margin: 0 auto;
+  margin: 20px auto;
   width: 360px;
   font-size: 14px;
 `;

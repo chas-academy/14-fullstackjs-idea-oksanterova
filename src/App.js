@@ -64,8 +64,6 @@ function App() {
               <Route path="/about" component={HeaderWithSearch} />
               <Route path="/login" component={HeaderWithSearch} />
               <Route path="/signup" component={HeaderWithSearch} />
-              <Route path="/user/:id/profile" component={HeaderWithSearch} />
-              <Route path="/reservations/:id/" component={HeaderWithSearch} />
             </Container>
           }
 
@@ -74,12 +72,14 @@ function App() {
             <Route exact path="/search" component={Search} />
             <Route exact path="/business/:id" component={Business} />
 
+            <UserRoute path="/profile" component={HeaderWithSearch} />
+            <UserRoute path="/reservations/:id/" component={HeaderWithSearch} />
             <UserRoute
               exact
               path="/business/:id/reservation"
               component={Reservation}
             />
-            <UserRoute exact path="/user/:id/profile" component={Profile} />
+            <UserRoute exact path="/profile" component={Profile} />
             <UserRoute
               exact
               path="/reservations/:id"
