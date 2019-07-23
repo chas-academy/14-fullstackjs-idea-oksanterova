@@ -41,7 +41,7 @@ export const Head = styled.div`
 `;
 
 const Body = styled.div`
-  margin: 20px;
+  margin: 0px;
 `;
 
 function ConfirmationLayout({ reservation }) {

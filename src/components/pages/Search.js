@@ -2,10 +2,10 @@ import React from "react";
 import "../../App.css";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
-import { Query } from "react-apollo";
 import queryString from "query-string";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { QueryLoader } from "../Loader";
 
 const QUERY = gql`
   query Search($term: String!) {
@@ -127,23 +127,9 @@ function Search({ location }) {
   const term = queryString.parse(location.search).q;
 
   return (
-    <Query query={QUERY} variables={{ term }}>
-      {({ loading, error, data }) => {
-        if (loading)
-          return (
-            <div className="spinner">
-              <div className="dot1" />
-              <div className="dot2" />
-            </div>
-          );
-        if (error) {
-          console.log(error);
-          return <p>An error occurred</p>;
-        }
-
-        return <SearchResults business={data.search.business} />;
-      }}
-    </Query>
+    <QueryLoader query={QUERY} variables={{ term }}>
+      {({ search }) => <SearchResults business={search.business} />}
+    </QueryLoader>
   );
 }
 

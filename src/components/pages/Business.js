@@ -2,11 +2,11 @@ import React from "react";
 import "../../App.css";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
-import { Query } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import Flex from "styled-flex-component";
 import { Star, Image, Rating, Name, Info, Category } from "./Search";
 import { Link } from "react-router-dom";
+import { QueryLoader } from "../Loader";
 
 const QUERY = gql`
   query Search($id: String!) {
@@ -138,7 +138,7 @@ export const BookBtn = styled.button`
   }
 `;
 
-function Space({ business }) {
+function BusinessLayout({ business }) {
   const { id, photos, name, categories, rating, location, reviews } = business;
 
   return (
@@ -193,23 +193,9 @@ function Business({ location, match }) {
   const id = match.params.id;
 
   return (
-    <Query query={QUERY} variables={{ id }}>
-      {({ loading, error, data }) => {
-        if (loading)
-          return (
-            <div className="spinner">
-              <div className="dot1" />
-              <div className="dot2" />
-            </div>
-          );
-        if (error) {
-          console.log(error);
-          return <p>An error occurred</p>;
-        }
-
-        return <Space business={data.business} />;
-      }}
-    </Query>
+    <QueryLoader query={QUERY} variables={{ id }}>
+      {({ business }) => <BusinessLayout business={business} />}
+    </QueryLoader>
   );
 }
 

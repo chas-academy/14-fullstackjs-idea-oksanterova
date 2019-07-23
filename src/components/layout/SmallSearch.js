@@ -3,6 +3,7 @@ import styled from "styled-components/macro";
 import logo from "../../assets/logo.png";
 import { withRouter } from "react-router";
 import Flex from "styled-flex-component";
+import { Link } from "react-router-dom";
 
 const InputWrapper = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -55,7 +56,9 @@ function SmallSearch({ history }) {
 
   return (
     <Flex>
-      <Logo />
+      <Link to="/">
+        <Logo />
+      </Link>
       <form onSubmit={handleSubmit}>
         <InputWrapper>
           <Input
