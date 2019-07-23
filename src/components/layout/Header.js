@@ -29,7 +29,7 @@ export default function Header({ children }) {
           <Query query={IS_LOGGED_IN}>
             {({ data }) =>
               data.isLoggedIn ? (
-                <StyledLink to="/user/:id/profile">Profile</StyledLink>
+                <StyledLink to="/profile">Profile</StyledLink>
               ) : (
                 <StyledLink to="/signup">Sign up</StyledLink>
               )
