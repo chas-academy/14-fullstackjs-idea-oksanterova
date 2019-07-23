@@ -4,8 +4,9 @@ import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { borderAndShadow } from "./Reservation";
 import { BigName, BookBtn } from "./Business";
-import { ApolloConsumer, Mutation } from "react-apollo";
+import { ApolloConsumer } from "react-apollo";
 import { gql } from "apollo-boost";
+import { MutationLoader } from "../Loader";
 
 const SIGN_IN = gql`
   mutation($login: String!, $password: String!) {
@@ -70,7 +71,7 @@ function Login({ history, location }) {
 
       <ApolloConsumer>
         {client => (
-          <Mutation
+          <MutationLoader
             mutation={SIGN_IN}
             onCompleted={({ signIn }) => {
               localStorage.setItem("token", signIn.token);
@@ -83,19 +84,8 @@ function Login({ history, location }) {
               }
             }}
           >
-            {(signIn, { loading, error }) => {
-              if (loading)
-                return (
-                  <div className="spinner">
-                    <div className="dot1" />
-                    <div className="dot2" />
-                  </div>
-                );
-              if (error) return <p>An error occurred</p>;
-
-              return <LoginForm signIn={signIn} />;
-            }}
-          </Mutation>
+            {signIn => <LoginForm signIn={signIn} />}
+          </MutationLoader>
         )}
       </ApolloConsumer>
     </Wrapper>

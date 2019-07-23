@@ -53,7 +53,6 @@ export default function Header({ children }) {
             }
           </Query>
           <StyledLink to="/about">About</StyledLink>
-          <StyledLink to="/">Contact</StyledLink>
         </Flex>
       </Flex>
     </ApolloProvider>
