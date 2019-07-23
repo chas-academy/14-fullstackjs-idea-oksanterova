@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
-import { BigName, BookBtn } from "./Business";
+import { BookBtn } from "./Business";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { QueryLoader, MutationLoader } from "../Loader";
@@ -50,6 +50,11 @@ const Wrapper = styled.div`
 
 export const Head = styled.div`
   margin: 10px auto;
+  font-size: 32px;
+  font-weight: 800;
+  margin: 10px;
+  color: #44000d;
+  text-align: center;
 `;
 
 const Label = styled.div`
@@ -96,9 +101,7 @@ function Booking({ business, createReservation }) {
 
   return (
     <Wrapper>
-      <Head>
-        <BigName>Your booking at {name}</BigName>
-      </Head>
+      <Head>Your booking at {name}</Head>
 
       <FormDiv onSubmit={handleSubmit}>
         <Label>Please pick a time for your dinner:</Label>
@@ -116,7 +119,7 @@ function Booking({ business, createReservation }) {
             Please select the number of guests:
             <select
               value={numberOfGuests}
-              onChange={e => setNumberOfGuests(e.target.value)}
+              onChange={e => setNumberOfGuests(parseInt(e.target.value))}
             >
               <option value="1">1</option>
               <option value="2">2</option>

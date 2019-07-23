@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import { borderAndShadow } from "./Reservation";
 import { BigLoginName } from "./Login";
 import { QueryLoader } from "../Loader";
@@ -19,6 +20,7 @@ const QUERY = gql`
         reservationTime
         business {
           name
+          id
         }
       }
     }
@@ -54,6 +56,10 @@ const Body = styled.div`
   margin: 20px;
 `;
 
+const BusinessName = styled(Link)`
+  color: #44000d;
+`;
+
 function ProfileLayout({ me }) {
   return (
     <Wrapper>
@@ -64,7 +70,10 @@ function ProfileLayout({ me }) {
           <Booking key={index}>
             {" "}
             <LittleLogo />
-            {res.business.name} for {res.numberOfGuests} guests at{" "}
+            <BusinessName to={`business/${res.business.id}`}>
+              {res.business.name}
+            </BusinessName>{" "}
+            for {res.numberOfGuests} guests at{" "}
             <Moment format="HH:mm DD-MM-YYYY">{res.reservationTime}</Moment>{" "}
           </Booking>
         ))}

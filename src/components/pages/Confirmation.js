@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
-import { BigName } from "./Business";
+import { BookBtn } from "./Business";
+import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { QueryLoader } from "../Loader";
 import Moment from "react-moment";
@@ -30,32 +31,37 @@ const Wrapper = styled.div`
   background-color: #fff;
   padding: 5px;
   width: 600px;
-  margin: 0 auto;
+  margin: 20px auto;
   display: flex;
   flex-flow: column wrap;
   align-items: center;
 `;
 
 export const Head = styled.div`
-  margin: 10px auto;
+  font-size: 32px;
+  font-weight: 800;
+  margin: 10px;
+  color: #44000d;
+  text-align: center;
 `;
 
 const Body = styled.div`
-  margin: 0px;
+  margin: 20px;
 `;
 
 function ConfirmationLayout({ reservation }) {
   return (
     <Wrapper>
-      <Head>
-        <BigName>Your booking at {reservation.business.name}</BigName>
-      </Head>
+      <Head>Your booking at {reservation.business.name}</Head>
       <Body>
         You have successfully booked a table at {reservation.business.name} for{" "}
         {reservation.numberOfGuests} guests at{" "}
         <Moment format="HH:mm DD-MM-YYYY">{reservation.reservationTime}</Moment>
         . See you soon!
       </Body>
+      <Link to="/profile">
+        <BookBtn>My reservations</BookBtn>
+      </Link>
     </Wrapper>
   );
 }
