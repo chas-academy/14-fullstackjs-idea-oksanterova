@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect, Fragment } from "react";
 import "../../App.css";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
@@ -6,14 +6,27 @@ import queryString from "query-string";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { QueryLoader } from "../Loader";
+import Flex from "styled-flex-component";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  InfoWindow
+} from "@react-google-maps/api";
+import { pseudo } from "postcss-selector-parser";
+import { is } from "date-fns/esm/locale";
 
 const QUERY = gql`
   query Search($term: String!) {
-    search(term: $term, location: "stockholm") {
+    search(term: $term, location: "nacka") {
       business {
         id
         photos
         name
+        coordinates {
+          latitude
+          longitude
+        }
         categories {
           title
         }
@@ -30,7 +43,14 @@ export const SearchWrapper = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   border: 1px #ccc solid;
   background-color: #fff;
-  border-radius: 6px;
+  border-radius: 6px 0 0 6px;
+  position: fixed;
+  overflow-y: scroll;
+  bottom: 20px;
+  right: calc(100%-455px);
+  left: 20px;
+  top: 82px;
+  z-index: 99999;
 `;
 
 export const Image = styled.img`
@@ -49,15 +69,17 @@ export const SearchResult = styled.div`
   flex-flow: row wrap;
   justify-content: space-between;
   border-bottom: 1px solid #c7cdcf;
-  width: 600px;
+  width: 400px;
   padding: 20px;
+  &:hover {
+    background-color: #eeeeee;
+  }
 `;
 
 export const Summary = styled.div`
   display: flex;
   flex-flow: column wrap;
   justify-content: flex-start;
-  width: 350px;
   flex: 1;
 `;
 
@@ -76,7 +98,6 @@ export const Category = styled.div`
 export const Info = styled.div`
   font-weight: 400;
   font-size: 14px;
-  width: 350px;
 `;
 
 export const Rating = styled.div`
@@ -94,32 +115,176 @@ export const Star = styled.div`
     no-repeat center;
 `;
 
-function SearchResults({ business }) {
+const GoogleMapWrapper = styled.div`
+  bottom: 20px;
+  left: 455px;
+  right: 20px;
+  top: 82px;
+  z-index: 1;
+  border-radius: 0 6px 6px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 1px #ccc solid;
+  position: fixed;
+  overflow: hidden;
+`;
+
+function BusinessMarker({ business, isActive, mapRef }) {
+  const { id, name, coordinates } = business;
+  const defaultIcon =
+    "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FE7569";
+  const activeIcon =
+    "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|00dddd";
+
+  const icon = isActive ? activeIcon : defaultIcon;
+  const position = {
+    lat: coordinates.latitude,
+    lng: coordinates.longitude
+  };
+
+  const markerRef = useRef(null);
+  const infoWindowRef = useRef(null);
+
+  const closeInfoWindow = () => {
+    const infoWindow = infoWindowRef.current;
+
+    if (!infoWindow) {
+      return;
+    }
+
+    infoWindow.close();
+  };
+
+  const openInfoWindow = () => {
+    const infoWindow = infoWindowRef.current;
+    const map = mapRef.current;
+    const marker = markerRef.current;
+
+    if (!infoWindow || !map || !marker) {
+      return;
+    }
+
+    infoWindow.open(map, marker);
+  };
+
+  useEffect(() => {
+    if (isActive) {
+      openInfoWindow();
+    } else {
+      closeInfoWindow();
+    }
+  }, [isActive]);
+
+  const infoWindow = (
+    <InfoWindow
+      onLoad={ref => {
+        infoWindowRef.current = ref;
+        closeInfoWindow();
+      }}
+      position={position}
+    >
+      <h3>{name}</h3>
+    </InfoWindow>
+  );
+
+  const marker = (
+    <Marker
+      onLoad={ref => {
+        markerRef.current = ref;
+      }}
+      onClick={e => {
+        openInfoWindow();
+      }}
+      key={id}
+      icon={icon}
+      position={position}
+    />
+  );
+
   return (
-    <SearchWrapper>
-      {business.map(({ id, photos, name, categories, rating, location }) => (
-        <SearchResult key={id}>
-          <Link to={`/business/${id}`}>
-            <Image src={photos} />
-          </Link>
-          <Summary>
+    <Fragment>
+      {marker}
+      {infoWindow}
+    </Fragment>
+  );
+}
+
+function SearchMap({ business, activeId }) {
+  const fitBounds = map => {
+    const bounds = new window.google.maps.LatLngBounds();
+
+    business.forEach(({ coordinates }) => {
+      bounds.extend({ lat: coordinates.latitude, lng: coordinates.longitude });
+    });
+
+    map.fitBounds(bounds);
+  };
+
+  const mapRef = useRef(null);
+
+  const markers = business.map(el => (
+    <BusinessMarker
+      key={el.id}
+      isActive={el.id === activeId}
+      business={el}
+      mapRef={mapRef}
+    />
+  ));
+
+  return (
+    <LoadScript
+      id="script-loader"
+      googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+    >
+      <GoogleMapWrapper>
+        <GoogleMap
+          id="example-map"
+          mapContainerStyle={{ height: "100vh" }}
+          onLoad={map => {
+            fitBounds(map);
+            mapRef.current = map;
+          }}
+          options={{
+            disableDefaultUI: true
+          }}
+        >
+          {markers}
+        </GoogleMap>
+      </GoogleMapWrapper>
+    </LoadScript>
+  );
+}
+
+function SearchResults({ business }) {
+  const [activeId, setActiveId] = useState(null);
+
+  return (
+    <Flex>
+      <SearchWrapper>
+        {business.map(({ id, photos, name, categories, rating, location }) => (
+          <SearchResult key={id} onMouseEnter={e => setActiveId(id)}>
             <Link to={`/business/${id}`}>
-              <Name>{name}</Name>
+              <Image src={photos} />
             </Link>
+            <Summary>
+              <Link to={`/business/${id}`}>
+                <Name>{name}</Name>
+              </Link>
 
-            <Category>{categories[0].title}</Category>
+              <Category>{categories[0].title}</Category>
 
-            {location.formatted_address.split("\n").map((address, index) => (
-              <Info key={index}>{address}</Info>
-            ))}
-          </Summary>
-          <Rating>
-            <span>{rating}</span>
-            <Star />
-          </Rating>
-        </SearchResult>
-      ))}
-    </SearchWrapper>
+              {location.formatted_address.split("\n").map((address, index) => (
+                <Info key={index}>{address}</Info>
+              ))}
+            </Summary>
+            <Rating>
+              <span>{rating}</span>
+              <Star />
+            </Rating>
+          </SearchResult>
+        ))}
+      </SearchWrapper>
+      <SearchMap business={business} activeId={activeId} />
+    </Flex>
   );
 }
 

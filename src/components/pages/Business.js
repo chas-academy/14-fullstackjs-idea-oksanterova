@@ -153,8 +153,6 @@ export const BookBtn = styled.button`
 function BusinessMap({ business }) {
   const { latitude, longitude } = business.coordinates;
 
-  debugger;
-
   return (
     <GoogleMapWrapper>
       <LoadScript
