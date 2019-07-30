@@ -33,16 +33,16 @@ export function QueryLoader(props) {
 export function MutationLoader(props) {
   return (
     <Mutation {...props}>
-      {(mutation, { loading, error }) => {
-        if (loading) {
-          return <Loader />;
-        }
-
+      {(mutation, { error }) => {
         if (error) {
           return <p>An error occurred</p>;
         }
 
-        return props.children(mutation);
+        return (
+          <div>
+            <div key="children">{props.children(mutation)}</div>
+          </div>
+        );
       }}
     </Mutation>
   );
