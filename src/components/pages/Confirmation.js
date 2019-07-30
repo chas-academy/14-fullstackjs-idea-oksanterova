@@ -66,7 +66,7 @@ function ConfirmationLayout({ reservation }) {
   );
 }
 
-function Confirmation({ history, match }) {
+function Confirmation({ match }) {
   const id = match.params.id;
 
   return (

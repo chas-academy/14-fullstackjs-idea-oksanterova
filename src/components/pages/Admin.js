@@ -4,14 +4,13 @@ import { gql } from "apollo-boost";
 import { withRouter } from "react-router";
 import { borderAndShadow } from "./Reservation";
 import { BigLoginName } from "./Login";
-import { QueryLoader, MutationLoader } from "../Loader";
 import Moment from "react-moment";
 import MaterialTable from "material-table";
-
-export default withRouter(Admin);
+import { compose, graphql } from "react-apollo";
+import DatePicker from "react-datepicker";
 
 const QUERY = gql`
-  query Search {
+  query GetReservations {
     reservations {
       id
       user {
@@ -33,6 +32,18 @@ const DELETE_RESERVATION = gql`
   }
 `;
 
+const UPDATE_RESERVATION = gql`
+  mutation($id: ID!, $reservationTime: Date!, $numberOfGuests: Int!) {
+    updateReservation(
+      id: $id
+      reservationTime: $reservationTime
+      numberOfGuests: $numberOfGuests
+    ) {
+      id
+    }
+  }
+`;
+
 const Wrapper = styled.div`
   ${borderAndShadow};
   background-color: #fff;
@@ -47,55 +58,78 @@ export const Booking = styled.div`
   margin: 20px;
 `;
 
-function AdminLayout({ reservations, deleteReservation }) {
+function Admin({
+  location,
+  match,
+  deleteReservation,
+  updateReservation,
+  data: { reservations, loading }
+}) {
   return (
-    <Wrapper>
-      <BigLoginName>Hello Admin!</BigLoginName>
-      <div style={{ minWidth: "100%" }}>
-        <MaterialTable
-          editable={{
-            onRowDelete: ({ id }) =>
-              deleteReservation({ variables: { id } }).then(() =>
-                console.log("deleted")
-              )
-          }}
-          columns={[
-            { title: "Username", field: "user.username" },
-            { title: "Business", field: "business.name" },
-            { title: "Guests", field: "numberOfGuests" },
-            {
-              title: "Time",
-              field: "reservationTime",
-              render: ({ reservationTime }) => (
-                <Moment format="YYYY-MM-DD HH:mm">{reservationTime}</Moment>
-              )
-            }
-          ]}
-          data={reservations}
-          title="Reservations"
-        />
-      </div>
-    </Wrapper>
+    <div>
+      <Wrapper>
+        <BigLoginName>Hello Admin!</BigLoginName>
+        <div style={{ minWidth: "100%" }}>
+          <MaterialTable
+            isLoading={loading}
+            editable={{
+              onRowDelete: ({ id }) => deleteReservation({ variables: { id } }),
+              onRowUpdate: ({ id, reservationTime, numberOfGuests }) =>
+                updateReservation({
+                  variables: {
+                    id,
+                    reservationTime,
+                    numberOfGuests: parseInt(numberOfGuests)
+                  }
+                })
+            }}
+            columns={[
+              { title: "Username", field: "user.username" },
+              { title: "Business", field: "business.name" },
+              { title: "Guests", field: "numberOfGuests", type: "numeric" },
+              {
+                title: "Time",
+                field: "reservationTime",
+                render: ({ reservationTime }) => (
+                  <Moment format="YYYY-MM-DD HH:mm">{reservationTime}</Moment>
+                ),
+                editComponent: ({ value, onChange }) => {
+                  return (
+                    <DatePicker
+                      selected={new Date(value)}
+                      onChange={onChange}
+                      showTimeSelect
+                      timeIntervals={15}
+                      dateFormat="yyyy-MM-dd HH:mm"
+                    />
+                  );
+                }
+              }
+            ]}
+            data={reservations}
+            title="Reservations"
+          />
+        </div>
+      </Wrapper>
+    </div>
   );
 }
 
-function Admin({ location, match }) {
-  return (
-    <QueryLoader query={QUERY}>
-      {({ reservations }) => (
-        <MutationLoader
-          mutation={DELETE_RESERVATION}
-          refetchQueries={mutationResult => [{ query: QUERY }]}
-          awaitRefetchQueries={true}
-        >
-          {deleteReservation => (
-            <AdminLayout
-              reservations={reservations}
-              deleteReservation={deleteReservation}
-            />
-          )}
-        </MutationLoader>
-      )}
-    </QueryLoader>
-  );
-}
+export default compose(
+  withRouter,
+  graphql(QUERY),
+  graphql(DELETE_RESERVATION, {
+    name: "deleteReservation",
+    options: {
+      awaitRefetchQueries: true,
+      refetchQueries: ["GetReservations"]
+    }
+  }),
+  graphql(UPDATE_RESERVATION, {
+    name: "updateReservation",
+    options: {
+      awaitRefetchQueries: true,
+      refetchQueries: ["GetReservations"]
+    }
+  })
+)(Admin);
