@@ -59,8 +59,6 @@ export const Booking = styled.div`
 `;
 
 function Admin({
-  location,
-  match,
   deleteReservation,
   updateReservation,
   data: { reservations, loading }
