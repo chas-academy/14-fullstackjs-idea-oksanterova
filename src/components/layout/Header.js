@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
 import Flex, { FlexItem } from "styled-flex-component";
-import { Query, ApolloProvider } from "react-apollo";
 import client, { IS_LOGGED_IN } from "../../client";
+import { gql } from "apollo-boost";
+import { compose, graphql } from "react-apollo";
 
 const StyledLink = styled(Link)`
   color: #fff;
@@ -13,48 +14,72 @@ const StyledLink = styled(Link)`
   font-weight: 600;
   font-size: 16px;
   border-bottom: 2px solid transparent;
-  margin: 0px 5px;
+  margin: auto;
 
   &:hover {
     border-bottom: 2px solid #fff;
   }
 `;
 
-export default function Header({ children }) {
+const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 42px;
+`;
+
+const IS_ADMIN = gql`
+  query IsAdmin {
+    me {
+      isAdmin
+    }
+  }
+`;
+
+function Header({ children, client: { isLoggedIn }, user: { loading, me } }) {
+  if (loading) {
+    return <div />;
+  }
+
+  const isAdmin = me && me.isAdmin;
+
+  const userMenu = (
+    <>
+      <StyledLink to="/profile">Profile</StyledLink>
+      <StyledLink
+        to="/logout"
+        onClick={() => {
+          client.writeData({ data: { isLoggedIn: false } });
+          localStorage.clear();
+        }}
+      >
+        Log Out
+      </StyledLink>
+    </>
+  );
+
+  const guestMenu = (
+    <>
+      <StyledLink to="/signup">Sign up</StyledLink>
+      <StyledLink to="/login">Login</StyledLink>
+    </>
+  );
+
   return (
-    <ApolloProvider client={client}>
-      <Flex justifyBetween>
-        <FlexItem grow>{children}</FlexItem>
-        <Flex contentEnd>
-          <Query query={IS_LOGGED_IN}>
-            {({ data }) =>
-              data.isLoggedIn ? (
-                <StyledLink to="/profile">Profile</StyledLink>
-              ) : (
-                <StyledLink to="/signup">Sign up</StyledLink>
-              )
-            }
-          </Query>
-          <Query query={IS_LOGGED_IN}>
-            {({ data }) =>
-              data.isLoggedIn ? (
-                <StyledLink
-                  to="/logout"
-                  onClick={() => {
-                    client.writeData({ data: { isLoggedIn: false } });
-                    localStorage.clear();
-                  }}
-                >
-                  Log Out
-                </StyledLink>
-              ) : (
-                <StyledLink to="/login">Login</StyledLink>
-              )
-            }
-          </Query>
+    <HeaderWrapper>
+      <FlexItem grow>{children}</FlexItem>
+      <Flex contentEnd>
+        {isLoggedIn ? userMenu : guestMenu}
+        {isAdmin ? (
+          <StyledLink to="/admin">Admin</StyledLink>
+        ) : (
           <StyledLink to="/about">About</StyledLink>
-        </Flex>
+        )}
       </Flex>
-    </ApolloProvider>
+    </HeaderWrapper>
   );
 }
+
+export default compose(
+  graphql(IS_LOGGED_IN, { name: "client" }),
+  graphql(IS_ADMIN, { name: "user" })
+)(Header);

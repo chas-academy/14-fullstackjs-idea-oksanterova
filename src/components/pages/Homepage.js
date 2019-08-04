@@ -87,8 +87,8 @@ function Homepage({ history }) {
               ref={search}
               onChange={e => setText(e.target.value)}
             />
+            <SearchBtn type="submit" />
           </form>
-          <SearchBtn />
         </InputWrapper>
       </Search>
     </Wrapper>

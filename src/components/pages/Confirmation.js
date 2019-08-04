@@ -56,7 +56,7 @@ function ConfirmationLayout({ reservation }) {
       <Body>
         You have successfully booked a table at {reservation.business.name} for{" "}
         {reservation.numberOfGuests} guests at{" "}
-        <Moment format="HH:mm DD-MM-YYYY">{reservation.reservationTime}</Moment>
+        <Moment format="YYYY-MM-DD HH:mm">{reservation.reservationTime}</Moment>
         . See you soon!
       </Body>
       <Link to="/profile">
@@ -66,7 +66,7 @@ function ConfirmationLayout({ reservation }) {
   );
 }
 
-function Confirmation({ history, match }) {
+function Confirmation({ match }) {
   const id = match.params.id;
 
   return (

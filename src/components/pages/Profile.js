@@ -85,7 +85,7 @@ function ProfileLayout({ me }) {
 function Profile({ location, match }) {
   const id = match.params.id;
   return (
-    <QueryLoader query={QUERY} variables={{ id }}>
+    <QueryLoader query={QUERY} variables={{ id }} fetchPolicy="network-only">
       {({ me }) => <ProfileLayout me={me} />}
     </QueryLoader>
   );

@@ -121,7 +121,7 @@ function LoginForm({ signIn }) {
 
       <Message>
         Not registered?{" "}
-        <StyledLink to={`/signup`}>Create an account</StyledLink>>
+        <StyledLink to={`/signup`}>Create an account</StyledLink>
       </Message>
     </LoginFormWrapper>
   );

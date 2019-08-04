@@ -270,7 +270,11 @@ function SearchResults({ business }) {
                 <Name>{name}</Name>
               </Link>
 
-              <Category>{categories[0].title}</Category>
+              {categories.length > 0 ? (
+                <Category>{categories[0].title}</Category>
+              ) : (
+                <Category>Other</Category>
+              )}
 
               {location.formatted_address.split("\n").map((address, index) => (
                 <Info key={index}>{address}</Info>
@@ -282,8 +286,8 @@ function SearchResults({ business }) {
             </Rating>
           </SearchResult>
         ))}
+        <SearchMap business={business} activeId={activeId} />
       </SearchWrapper>
-      <SearchMap business={business} activeId={activeId} />
     </Flex>
   );
 }
