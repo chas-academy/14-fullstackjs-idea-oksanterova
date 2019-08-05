@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm install && npm install --only=dev --no-shrinkwrap && react-scripts build && cd server && npm install"
+    "build": "yarn install && yarn install --only=dev --no-shrinkwrap && react-scripts build && cd server && yarn install"
   },
   "eslintConfig": {
     "extends": "react-app"
