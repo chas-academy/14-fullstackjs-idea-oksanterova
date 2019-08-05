@@ -60,7 +60,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:8000/graphql",
+  uri: process.env.REACT_APP_GRAPHQL_URL,
   headers: {
     "Accept-Language": "en_US"
   }
