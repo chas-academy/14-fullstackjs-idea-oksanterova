@@ -34,7 +34,9 @@
     "node-fetch": "^2.6.0",
     "promise-limit": "^2.7.0",
     "uuid": "^3.3.2",
-    "validator": "^10.9.0",
-    "fsevents": "2.0.6"
+    "validator": "^10.9.0"
+  },
+  "resolutions": {
+    "**/**/fsevents": "^1.2.9"
   }
 }
