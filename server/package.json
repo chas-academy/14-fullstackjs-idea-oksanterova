@@ -4,7 +4,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
     "build": "node_modules/.bin/babel --out-dir=dist src",
-    "serve": "node dist/server.js"
+    "serve": "node dist/index.js"
   },
   "keywords": [],
   "devDependencies": {
