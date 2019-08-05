@@ -13,8 +13,7 @@
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.1.6",
     "@babel/register": "^7.0.0",
-    "nodemon": "^1.18.7",
-    "fsevents": "^1.2.9"
+    "nodemon": "^1.18.7"
   },
   "dependencies": {
     "apollo-link-context": "^1.0.18",
@@ -35,6 +34,7 @@
     "node-fetch": "^2.6.0",
     "promise-limit": "^2.7.0",
     "uuid": "^3.3.2",
-    "validator": "^10.9.0"
+    "validator": "^10.9.0",
+    "fsevents": "2.0.6"
   }
 }
