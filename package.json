@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "cd server && npm run build && cd .. && yarn install && yarn install --only=dev --no-shrinkwrap && react-scripts build",
-    "heroku-postbuild": "cd server && npm run build"
+    "heroku-postbuild": "cd server && npm install && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
