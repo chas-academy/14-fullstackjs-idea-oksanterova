@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
-import { BookBtn } from "./Business";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { QueryLoader, MutationLoader } from "../Loader";
+import { borderAndShadow, BookBtn } from "../Common";
 
 const QUERY = gql`
   query Search($id: String!) {
@@ -29,12 +29,6 @@ const CREATE_RESERVATION = gql`
       id
     }
   }
-`;
-
-export const borderAndShadow = props => `
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  border: 1px #ccc solid;
-  border-radius: 6px;
 `;
 
 const Wrapper = styled.div`

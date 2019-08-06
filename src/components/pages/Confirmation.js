@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
-import { BookBtn } from "./Business";
 import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { QueryLoader } from "../Loader";
 import Moment from "react-moment";
+import { borderAndShadow, BookBtn } from "../Common";
 
 const QUERY = gql`
   query Search($id: ID!) {
@@ -18,12 +18,6 @@ const QUERY = gql`
       }
     }
   }
-`;
-
-export const borderAndShadow = props => `
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  border: 1px #ccc solid;
-  border-radius: 6px;
 `;
 
 const Wrapper = styled.div`

@@ -13,8 +13,7 @@ import {
   Marker,
   InfoWindow
 } from "@react-google-maps/api";
-import { pseudo } from "postcss-selector-parser";
-import { is } from "date-fns/esm/locale";
+import { Name } from "../Common";
 
 const QUERY = gql`
   query Search($term: String!) {
@@ -81,12 +80,6 @@ export const Summary = styled.div`
   flex-flow: column wrap;
   justify-content: flex-start;
   flex: 1;
-`;
-
-export const Name = styled.div`
-  font-weight: 700;
-  color: #44000d;
-  cursor: pointer;
 `;
 
 export const Category = styled.div`

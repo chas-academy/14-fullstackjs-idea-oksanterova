@@ -4,9 +4,10 @@ import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
 import Flex from "styled-flex-component";
-import { Star, Image, Rating, Name, Category } from "./Search";
+import { Star, Image, Rating, Category } from "./Search";
 import { Link } from "react-router-dom";
 import { QueryLoader } from "../Loader";
+import { borderAndShadow, BookBtn, Name, BigName } from "../Common";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const QUERY = gql`
@@ -38,12 +39,6 @@ const QUERY = gql`
   }
 `;
 
-const borderAndShadow = props => `
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  border: 1px #ccc solid;
-  border-radius: 6px;
-`;
-
 const Wrapper = styled.div`
   ${borderAndShadow};
   background-color: #fff;
@@ -55,12 +50,6 @@ const Head = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 20px;
-`;
-
-export const BigName = styled(Name)`
-  font-size: 32px;
-  font-weight: 800;
-  margin-right: 40px;
 `;
 
 const BigImage = styled(Image)`
@@ -132,22 +121,6 @@ const GoogleMapWrapper = styled.div`
   ${borderAndShadow}
   width: 300px;
   height: 200px;
-`;
-
-export const BookBtn = styled.button`
-  width: 300px;
-  height: 50px;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 800;
-  background-color: #ad1d45;
-  border-radius: 6px;
-  cursor: pointer;
-  margin: 10px 0 10px 0;
-
-  :hover {
-    opacity: 0.8;
-  }
 `;
 
 function BusinessMap({ business }) {

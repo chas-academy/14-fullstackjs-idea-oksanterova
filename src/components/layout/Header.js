@@ -25,6 +25,10 @@ const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   height: 42px;
+
+  @media (max-width: 468px) {
+    justify-content: space-around;
+  }
 `;
 
 const IS_ADMIN = gql`
