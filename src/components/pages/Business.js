@@ -42,6 +42,10 @@ const QUERY = gql`
 const Wrapper = styled.div`
   ${borderAndShadow};
   background-color: #fff;
+  margin: 0 auto;
+  align-items: center;
+  @media (max-width: 700px) {
+  }
 `;
 
 const Head = styled.div`
@@ -56,6 +60,16 @@ const BigImage = styled(Image)`
   width: 800px;
   height: 500px;
   margin: 20px;
+
+  @media (max-width: 900px) {
+    width: 400px;
+    height: 250px;
+  }
+
+  @media (max-width: 500px) {
+    width: 200px;
+    height: 175px;
+  }
 `;
 
 const BusinessBody = styled.div`
@@ -64,14 +78,31 @@ const BusinessBody = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   width: 800px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 `;
 
 const Reviews = styled.div`
   width: 400px;
+  @media (max-width: 500px) {
+    width: 300px;
+  }
+
+  @media (max-width: 360px) {
+    width: 200px;
+  }
 `;
 
 const Review = styled.div`
   margin: 0px 0px 10px 0px;
+
+  @media (max-width: 900px) {
+    margin: 20px 0;
+  }
 `;
 
 const UserImage = styled.img`
@@ -81,6 +112,11 @@ const UserImage = styled.img`
   object-fit: cover;
   flex-shrink: 0;
   margin-right: 10px;
+
+  @media (max-width: 500px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 
 const UserText = styled.div`
@@ -105,6 +141,10 @@ const BusinessSummary = styled.div`
   width: 300px;
   margin-left: 10px;
   margin-bottom: 10px;
+
+  @media (max-width: 500px) {
+    margin: 20px;
+  }
 `;
 
 const Summary = styled.div`
@@ -121,6 +161,9 @@ const GoogleMapWrapper = styled.div`
   ${borderAndShadow}
   width: 300px;
   height: 200px;
+  @media (max-width: 500px) {
+    display: none;
+  }
 `;
 
 function BusinessMap({ business }) {

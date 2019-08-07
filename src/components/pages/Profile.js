@@ -36,6 +36,10 @@ const Wrapper = styled.div`
   align-items: center;
   margin: 20px auto;
   width: 600px;
+  max-width: 60%;
+  @media (max-width: 700px) {
+    max-width: 95%;
+  }
 `;
 
 const LittleLogo = styled.div`

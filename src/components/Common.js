@@ -20,6 +20,13 @@ export const BookBtn = styled.button`
   :hover {
     opacity: 0.8;
   }
+
+  @media (max-width: 500px) {
+    width: 200px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 800;
+  }
 `;
 
 export const Name = styled.div`

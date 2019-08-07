@@ -51,10 +51,22 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  margin: 0 auto;
+  max-width: 60%;
+  @media (max-width: 700px) {
+    max-width: 95%;
+  }
 `;
 
 export const Booking = styled.div`
   margin: 20px;
+`;
+
+export const TableWrapper = styled.div`
+  width: 100%;
+  @media (max-width: 700px) {
+    max-width: 95%;
+  }
 `;
 
 function Admin({
@@ -66,7 +78,7 @@ function Admin({
     <div>
       <Wrapper>
         <BigLoginName>Hello Admin!</BigLoginName>
-        <div style={{ minWidth: "100%" }}>
+        <TableWrapper>
           <MaterialTable
             isLoading={loading}
             editable={{
@@ -106,7 +118,7 @@ function Admin({
             data={reservations}
             title="Reservations"
           />
-        </div>
+        </TableWrapper>
       </Wrapper>
     </div>
   );

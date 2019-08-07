@@ -40,6 +40,18 @@ const Wrapper = styled.div`
   display: flex;
   flex-flow: column wrap;
   align-items: center;
+
+  @media (max-width: 680px) {
+    width: 400px;
+  }
+
+  @media (max-width: 480px) {
+    width: 320px;
+  }
+
+  @media (max-width: 360px) {
+    width: 270px;
+  }
 `;
 
 export const Head = styled.div`
@@ -49,6 +61,10 @@ export const Head = styled.div`
   margin: 10px;
   color: #44000d;
   text-align: center;
+
+  @media (max-width: 680px) {
+    font-size: 24px;
+  }
 `;
 
 const Label = styled.div`
