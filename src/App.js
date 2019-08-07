@@ -20,11 +20,23 @@ import Confirmation from "./components/pages/Confirmation";
 import Admin from "./components/pages/Admin";
 import { withRouter } from "react-router";
 
+const HeaderWithSearchWrapper = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: 680px) {
+    flex-direction: column-reverse;
+  }
+`;
+
 function HeaderWithSearch() {
   return (
-    <Header>
+    <HeaderWithSearchWrapper>
       <SmallSearch />
-    </Header>
+      <Header />
+    </HeaderWithSearchWrapper>
   );
 }
 

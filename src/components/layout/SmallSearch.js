@@ -9,7 +9,7 @@ const InputWrapper = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   border: 1px #ccc solid;
   background-color: #fff;
-  width: 300px;
+  max-width: 300px;
   height: 40px;
   border-radius: 6px;
   padding-left: 10px;

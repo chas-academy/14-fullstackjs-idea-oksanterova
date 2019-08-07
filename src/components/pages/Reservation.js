@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
-import { BookBtn } from "./Business";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { QueryLoader, MutationLoader } from "../Loader";
+import { borderAndShadow, BookBtn } from "../Common";
 
 const QUERY = gql`
   query Search($id: String!) {
@@ -31,12 +31,6 @@ const CREATE_RESERVATION = gql`
   }
 `;
 
-export const borderAndShadow = props => `
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  border: 1px #ccc solid;
-  border-radius: 6px;
-`;
-
 const Wrapper = styled.div`
   ${borderAndShadow};
   background-color: #fff;
@@ -46,6 +40,18 @@ const Wrapper = styled.div`
   display: flex;
   flex-flow: column wrap;
   align-items: center;
+
+  @media (max-width: 680px) {
+    width: 400px;
+  }
+
+  @media (max-width: 480px) {
+    width: 320px;
+  }
+
+  @media (max-width: 360px) {
+    width: 270px;
+  }
 `;
 
 export const Head = styled.div`
@@ -55,6 +61,10 @@ export const Head = styled.div`
   margin: 10px;
   color: #44000d;
   text-align: center;
+
+  @media (max-width: 680px) {
+    font-size: 24px;
+  }
 `;
 
 const Label = styled.div`

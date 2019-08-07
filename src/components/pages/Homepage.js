@@ -18,6 +18,15 @@ const InputWrapper = styled.div`
   height: 53px;
   border-radius: 6px;
   padding-left: 10px;
+
+  @media (max-width: 686px) {
+    width: 480px;
+    margin-right: 20px;
+  }
+
+  @media (max-width: 400px) {
+    width: 380px;
+  }
 `;
 
 const Input = styled.input`
@@ -27,6 +36,13 @@ const Input = styled.input`
   margin: 10px 5px 0px 12px;
   border: 0;
   outline: none;
+  @media (max-width: 686px) {
+    width: 460px;
+  }
+
+  @media (max-width: 400px) {
+    width: 360px;
+  }
 `;
 
 const Search = styled.div`
@@ -44,6 +60,10 @@ const Logo = styled.div`
   height: 36px;
   background: url(${logo}) no-repeat;
   padding-right: 30px;
+
+  @media (max-width: 828px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const SearchBtn = styled.button`

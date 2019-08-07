@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { withRouter } from "react-router";
 import {
   Wrapper,
-  BigLoginName,
   Message,
   LoginFormWrapper,
   Input,
   StyledLink,
   LoginBtn
 } from "./Login";
-import { ApolloConsumer, Mutation } from "react-apollo";
+import { BigLoginName } from "../Common";
+import { ApolloConsumer } from "react-apollo";
 import { gql } from "apollo-boost";
+import { MutationLoader } from "../Loader";
 
 const SIGN_UP = gql`
   mutation($username: String!, $email: String!, $password: String!) {
@@ -27,7 +28,7 @@ function SignUp({ history }) {
 
       <ApolloConsumer>
         {client => (
-          <Mutation
+          <MutationLoader
             mutation={SIGN_UP}
             onCompleted={({ signUp }) => {
               localStorage.setItem("token", signUp.token);
@@ -35,19 +36,8 @@ function SignUp({ history }) {
               history.push("/");
             }}
           >
-            {(signUp, { loading, error }) => {
-              if (loading)
-                return (
-                  <div className="spinner">
-                    <div className="dot1" />
-                    <div className="dot2" />
-                  </div>
-                );
-              if (error) return <p>An error occurred</p>;
-
-              return <LoginForm signUp={signUp} />;
-            }}
-          </Mutation>
+            {signUp => <LoginForm signUp={signUp} />}
+          </MutationLoader>
         )}
       </ApolloConsumer>
     </Wrapper>

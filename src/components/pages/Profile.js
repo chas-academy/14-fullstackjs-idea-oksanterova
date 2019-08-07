@@ -3,11 +3,10 @@ import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import { borderAndShadow } from "./Reservation";
-import { BigLoginName } from "./Login";
 import { QueryLoader } from "../Loader";
 import Moment from "react-moment";
 import logo_black_min from "../../assets/logo_black_min.png";
+import { borderAndShadow, BigLoginName } from "../Common";
 
 export default withRouter(Profile);
 
@@ -37,6 +36,10 @@ const Wrapper = styled.div`
   align-items: center;
   margin: 20px auto;
   width: 600px;
+  max-width: 60%;
+  @media (max-width: 700px) {
+    max-width: 95%;
+  }
 `;
 
 const LittleLogo = styled.div`

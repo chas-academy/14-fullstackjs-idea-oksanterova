@@ -4,9 +4,10 @@ import styled from "styled-components/macro";
 import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
 import Flex from "styled-flex-component";
-import { Star, Image, Rating, Name, Category } from "./Search";
+import { Star, Image, Rating, Category } from "./Search";
 import { Link } from "react-router-dom";
 import { QueryLoader } from "../Loader";
+import { borderAndShadow, BookBtn, Name, BigName } from "../Common";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const QUERY = gql`
@@ -38,15 +39,13 @@ const QUERY = gql`
   }
 `;
 
-const borderAndShadow = props => `
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  border: 1px #ccc solid;
-  border-radius: 6px;
-`;
-
 const Wrapper = styled.div`
   ${borderAndShadow};
   background-color: #fff;
+  margin: 0 auto;
+  align-items: center;
+  @media (max-width: 700px) {
+  }
 `;
 
 const Head = styled.div`
@@ -57,16 +56,20 @@ const Head = styled.div`
   margin: 20px;
 `;
 
-export const BigName = styled(Name)`
-  font-size: 32px;
-  font-weight: 800;
-  margin-right: 40px;
-`;
-
 const BigImage = styled(Image)`
   width: 800px;
   height: 500px;
   margin: 20px;
+
+  @media (max-width: 900px) {
+    width: 400px;
+    height: 250px;
+  }
+
+  @media (max-width: 500px) {
+    width: 200px;
+    height: 175px;
+  }
 `;
 
 const BusinessBody = styled.div`
@@ -75,14 +78,31 @@ const BusinessBody = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   width: 800px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 `;
 
 const Reviews = styled.div`
   width: 400px;
+  @media (max-width: 500px) {
+    width: 300px;
+  }
+
+  @media (max-width: 360px) {
+    width: 200px;
+  }
 `;
 
 const Review = styled.div`
   margin: 0px 0px 10px 0px;
+
+  @media (max-width: 900px) {
+    margin: 20px 0;
+  }
 `;
 
 const UserImage = styled.img`
@@ -92,6 +112,11 @@ const UserImage = styled.img`
   object-fit: cover;
   flex-shrink: 0;
   margin-right: 10px;
+
+  @media (max-width: 500px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 
 const UserText = styled.div`
@@ -116,6 +141,10 @@ const BusinessSummary = styled.div`
   width: 300px;
   margin-left: 10px;
   margin-bottom: 10px;
+
+  @media (max-width: 500px) {
+    margin: 20px;
+  }
 `;
 
 const Summary = styled.div`
@@ -132,21 +161,8 @@ const GoogleMapWrapper = styled.div`
   ${borderAndShadow}
   width: 300px;
   height: 200px;
-`;
-
-export const BookBtn = styled.button`
-  width: 300px;
-  height: 50px;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 800;
-  background-color: #ad1d45;
-  border-radius: 6px;
-  cursor: pointer;
-  margin: 10px 0 10px 0;
-
-  :hover {
-    opacity: 0.8;
+  @media (max-width: 500px) {
+    display: none;
   }
 `;
 

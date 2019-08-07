@@ -13,8 +13,7 @@ import {
   Marker,
   InfoWindow
 } from "@react-google-maps/api";
-import { pseudo } from "postcss-selector-parser";
-import { is } from "date-fns/esm/locale";
+import { Name } from "../Common";
 
 const QUERY = gql`
   query Search($term: String!) {
@@ -51,6 +50,22 @@ export const SearchWrapper = styled.div`
   left: 20px;
   top: 82px;
   z-index: 99999;
+
+  @media (max-width: 700px) {
+    top: 120px;
+    max-width: 360px;
+    border-radius: 6px;
+    right: 20px;
+    padding-right: 20px;
+  }
+  @media (max-width: 460px) {
+    padding-right: 0;
+  }
+
+  @media (max-width: 400px) {
+    top: 120px;
+    min-width: 280px;
+  }
 `;
 
 export const Image = styled.img`
@@ -74,6 +89,22 @@ export const SearchResult = styled.div`
   &:hover {
     background-color: #eeeeee;
   }
+
+  @media (max-width: 700px) {
+    width: 340px;
+  }
+
+  @media (max-width: 480px) {
+    width: 300px;
+  }
+
+  @media (max-width: 420px) {
+    width: 2800px;
+  }
+
+  @media (max-width: 340px) {
+    width: 240px;
+  }
 `;
 
 export const Summary = styled.div`
@@ -81,12 +112,14 @@ export const Summary = styled.div`
   flex-flow: column wrap;
   justify-content: flex-start;
   flex: 1;
+
+  @media (max-width: 340px) {
+    min-width: 160px;
+  }
 `;
 
-export const Name = styled.div`
-  font-weight: 700;
-  color: #44000d;
-  cursor: pointer;
+export const NoResult = styled.div`
+  margin: 20px;
 `;
 
 export const Category = styled.div`
@@ -105,6 +138,7 @@ export const Rating = styled.div`
   flex-flow: row wrap;
   font-weight: 700;
   line-height: 24px;
+  align-self: flex-end;
 `;
 
 export const Star = styled.div`
@@ -126,6 +160,10 @@ const GoogleMapWrapper = styled.div`
   border: 1px #ccc solid;
   position: fixed;
   overflow: hidden;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
 `;
 
 function BusinessMarker({ business, isActive, mapRef }) {
@@ -257,35 +295,46 @@ function SearchMap({ business, activeId }) {
 function SearchResults({ business }) {
   const [activeId, setActiveId] = useState(null);
 
+  const searchResults = business.map(
+    ({ id, photos, name, categories, rating, location }) => (
+      <SearchResult key={id} onMouseEnter={e => setActiveId(id)}>
+        <Link to={`/business/${id}`}>
+          <Image src={photos} />
+        </Link>
+        <Summary>
+          <Link to={`/business/${id}`}>
+            <Name>{name}</Name>
+          </Link>
+
+          {categories.length > 0 ? (
+            <Category>{categories[0].title}</Category>
+          ) : (
+            <Category>Other</Category>
+          )}
+
+          {location.formatted_address.split("\n").map((address, index) => (
+            <Info key={index}>{address}</Info>
+          ))}
+        </Summary>
+        <Rating>
+          <span>{rating}</span>
+          <Star />
+        </Rating>
+      </SearchResult>
+    )
+  );
+
+  if (searchResults.length === 0)
+    return (
+      <SearchWrapper>
+        <NoResult>There is not any match. Please try again!</NoResult>
+      </SearchWrapper>
+    );
+
   return (
     <Flex>
       <SearchWrapper>
-        {business.map(({ id, photos, name, categories, rating, location }) => (
-          <SearchResult key={id} onMouseEnter={e => setActiveId(id)}>
-            <Link to={`/business/${id}`}>
-              <Image src={photos} />
-            </Link>
-            <Summary>
-              <Link to={`/business/${id}`}>
-                <Name>{name}</Name>
-              </Link>
-
-              {categories.length > 0 ? (
-                <Category>{categories[0].title}</Category>
-              ) : (
-                <Category>Other</Category>
-              )}
-
-              {location.formatted_address.split("\n").map((address, index) => (
-                <Info key={index}>{address}</Info>
-              ))}
-            </Summary>
-            <Rating>
-              <span>{rating}</span>
-              <Star />
-            </Rating>
-          </SearchResult>
-        ))}
+        {searchResults}
         <SearchMap business={business} activeId={activeId} />
       </SearchWrapper>
     </Flex>

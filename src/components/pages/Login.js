@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components/macro";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import { borderAndShadow } from "./Reservation";
-import { BigName, BookBtn } from "./Business";
+import { borderAndShadow, BigLoginName, BookBtn } from "../Common";
 import { ApolloConsumer } from "react-apollo";
 import { gql } from "apollo-boost";
 import { MutationLoader } from "../Loader";
@@ -24,13 +23,17 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  margin: 20px auto;
   width: 360px;
+  margin: 0 auto;
   font-size: 14px;
-`;
 
-export const BigLoginName = styled(BigName)`
-  margin: 15px;
+  @media (max-width: 668px) {
+    max-width: 320px;
+  }
+
+  @media (max-width: 340px) {
+    max-width: 270px;
+  }
 `;
 
 export const Message = styled.div`
@@ -41,6 +44,11 @@ export const Message = styled.div`
 export const LoginFormWrapper = styled.form`
   max-width: 360px;
   text-align: center;
+  margin: 0 auto;
+
+  @media (max-width: 400px) {
+    max-width: 280px;
+  }
 `;
 
 export const Input = styled.input`
@@ -53,6 +61,10 @@ export const Input = styled.input`
   border-radius: 6px;
   outline: none;
   padding-left: 15px;
+
+  @media (max-width: 400px) {
+    max-width: 240px;
+  }
 `;
 
 export const StyledLink = styled(Link)`
@@ -62,6 +74,10 @@ export const StyledLink = styled(Link)`
 export const LoginBtn = styled(BookBtn)`
   margin: 10px;
   width: 315px;
+  @media (max-width: 400px) {
+    max-width: 260px;
+    margin: 10px;
+  }
 `;
 
 function Login({ history, location }) {
