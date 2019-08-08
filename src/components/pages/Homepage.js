@@ -37,11 +37,11 @@ const Input = styled.input`
   border: 0;
   outline: none;
   @media (max-width: 686px) {
-    width: 460px;
+    width: 420px;
   }
 
   @media (max-width: 400px) {
-    width: 360px;
+    width: 320px;
   }
 `;
 

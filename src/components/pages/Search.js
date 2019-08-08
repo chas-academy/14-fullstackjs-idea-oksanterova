@@ -53,18 +53,23 @@ export const SearchWrapper = styled.div`
 
   @media (max-width: 700px) {
     top: 120px;
-    max-width: 360px;
+    min-width: 360px;
     border-radius: 6px;
     right: 20px;
     padding-right: 20px;
   }
   @media (max-width: 460px) {
     padding-right: 0;
+    min-width: 320px;
   }
 
   @media (max-width: 400px) {
     top: 120px;
     min-width: 280px;
+  }
+
+  @media (max-width: 340px) {
+    min-width: 240px;
   }
 `;
 
@@ -99,7 +104,7 @@ export const SearchResult = styled.div`
   }
 
   @media (max-width: 420px) {
-    width: 2800px;
+    width: 290px;
   }
 
   @media (max-width: 340px) {
